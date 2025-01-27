@@ -1,5 +1,5 @@
-import schedule
 import time
+import schedule
 from database import create_table
 from flight_data import fetch_flight_data, plot_flight_data
 

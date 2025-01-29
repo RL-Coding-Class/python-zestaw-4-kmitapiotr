@@ -3,10 +3,10 @@ import schedule
 from database import create_table
 from flight_data import fetch_flight_data, plot_flight_data
 
-def main(interval, max_repeats):
 
+def main(interval, max_repeats):
     create_table(max_repeats)
-    
+
     # Licznik iteracji
     counter = 0
 

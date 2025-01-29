@@ -14,24 +14,27 @@ class Pojazd(ABC):
     @property
     def predkosc(self) -> float:
         return self._predkosc
+
     @predkosc.setter
     def predkosc(self, val: float):
         if val < 0:
             raise ValueError('Prędkość nie może być ujemna!')
         self._predkosc = val
+
     @predkosc.deleter
     def predkosc(self):
         self._predkosc = 0
 
 
 class Samochod(Pojazd):
-# w __init__ dodaj skladowa liczba_drzwi
+    # w __init__ dodaj skladowa liczba_drzwi
     def __init__(self, model: str, rok: int, liczba_drzwi: int):
         super().__init__(model, rok)
         self.liczba_drzwi = liczba_drzwi
 
+
 class Autobus(Pojazd):
-# w __init__ dodaj skladowa liczba_miejsc
+    # w __init__ dodaj skladowa liczba_miejsc
     def __init__(self, model: str, rok: int, liczba_miejsc: int):
         super().__init__(model, rok)
         self.liczba_miejsc = liczba_miejsc
@@ -46,23 +49,27 @@ class FabrykaPojazdow(ABC):
     @property
     def nazwa(self) -> str:
         return self._nazwa
+
     @abstractmethod
     def stworz_pojazd(self):
         return
+
     @classmethod
     def utworz_fabryke(self, typ_fabryki: str, nazwa: str):
         if typ_fabryki == 'samochod':
             return FabrykaSamochodow(nazwa)
         if typ_fabryki == 'autobus':
             return FabrykaAutobusow(nazwa)
+
     @staticmethod
     def sprawdz_rok(rok: int):
         return 1900 <= rok <= 2024
+
     def _zwieksz_licznik(self):
         self._liczba_wyprodukowanych += 1
+
     def ile_wyprodukowano(self):
         return self._liczba_wyprodukowanych
-
 
 
 class FabrykaSamochodow(FabrykaPojazdow):
@@ -72,6 +79,7 @@ class FabrykaSamochodow(FabrykaPojazdow):
             raise ValueError('Nieprawidłowy rok produkcji!')
         self._zwieksz_licznik()
         return Samochod(model, rok, liczba_drzwi)
+
 
 class FabrykaAutobusow(FabrykaPojazdow):
     def stworz_pojazd(self, model: str, rok: int, liczba_miejsc: int = 50) -> Autobus:
@@ -87,8 +95,8 @@ def main():
     fabryka_autobusow = FabrykaPojazdow.utworz_fabryke('autobus', "Fabryka Autobusów Kraków")
 
     # Utworzone fabryki - demonstracja @property nazwa
-    print(f"Nazwa fabryki: {fabryka_samochodow.nazwa}")  
-    print(f"Nazwa fabryki: {fabryka_autobusow.nazwa}")  
+    print(f"Nazwa fabryki: {fabryka_samochodow.nazwa}")
+    print(f"Nazwa fabryki: {fabryka_autobusow.nazwa}")
 
     # Utworz pojazdy
     samochod = fabryka_samochodow.stworz_pojazd("Fiat", 2023, liczba_drzwi=5)
@@ -103,6 +111,7 @@ def main():
     # Pokazanie ile pojazdow wyprodukowano
     print(f"Wyprodukowano samochodów: {fabryka_samochodow.ile_wyprodukowano()}")
     print(f"Wyprodukowano autobusów: {fabryka_autobusow.ile_wyprodukowano()}")
+
 
 if __name__ == "__main__":
     main()

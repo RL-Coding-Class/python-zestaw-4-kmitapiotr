@@ -57,7 +57,7 @@ def plot_flight_data(databasefile="flights.db", show_plot=True):
     # Remove duplicate flights, keeping the one with the highest velocity
     flight_df = flight_df.sort_values(by='velocity_kmh', ascending=False).drop_duplicates(subset='icao24', keep='first')
 
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=(8, 6))
     plt.scatter(flight_df['velocity_kmh'], flight_df['geo_altitude_km'], alpha=0.6)
     plt.xlabel('Velocity (km/h)')
     plt.ylabel('Geometric Altitude (km)')

@@ -6,7 +6,7 @@ from flight_data import fetch_flight_data, plot_flight_data
 
 
 def main(interval, max_repeats):
-    """ main function"""
+    """ main function """
     create_table(max_repeats)
 
     # Licznik iteracji

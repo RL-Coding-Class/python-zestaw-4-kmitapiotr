@@ -25,7 +25,7 @@ def create_table(max_repeats, databasefile="flights.db"):
                 position_source INTEGER
             )'''
 
-    # podlacz baze danych SQLite
+    # podlacz baze danych  SQLite
     connection = sqlite3.connect(databasefile)
     cursor = connection.cursor()
     cursor.execute(query)

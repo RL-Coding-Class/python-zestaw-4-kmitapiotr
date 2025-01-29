@@ -41,7 +41,7 @@ def fetch_flight_data(databasefile="flights.db"):
         print("No flight data available.")
 
 
-# Odczyt danych i wygenerowanie wykresu z danych lotniczych
+# Odczyt danych i wygenerowanie wykresu z danych ltniczych
 def plot_flight_data(databasefile="flights.db", show_plot=True):
     """ plot flight data """
     # Wczytaj dane lotnicze z bazy danych

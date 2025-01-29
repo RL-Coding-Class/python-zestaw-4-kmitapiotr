@@ -1,3 +1,4 @@
+""" main """
 import time
 import schedule
 from database import create_table
@@ -5,19 +6,21 @@ from flight_data import fetch_flight_data, plot_flight_data
 
 
 def main(interval, max_repeats):
+    """ main function"""
     create_table(max_repeats)
 
     # Licznik iteracji
     counter = 0
 
     def job_wrapper():
+        """ job wrapper """
         nonlocal counter
         if counter < max_repeats:
             fetch_flight_data()
             counter += 1
-        else:
-            print("All tasks completed. Stopping scheduler...")
-            return schedule.CancelJob
+            return 1
+        print("All tasks completed. Stopping scheduler...")
+        return schedule.CancelJob
 
     # Harmonogram z job_wrapper
     schedule.every(interval).seconds.do(job_wrapper)

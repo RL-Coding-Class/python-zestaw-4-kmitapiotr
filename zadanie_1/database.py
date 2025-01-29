@@ -1,8 +1,10 @@
+""" module to connect to the database and manipulate data """
 import sqlite3
 import pandas as pd
 
 
 def create_table(max_repeats, databasefile="flights.db"):
+    """ creating table """
     query = '''CREATE TABLE IF NOT EXISTS airport_atl (
                 icao24 TEXT,
                 callsign TEXT,
@@ -42,6 +44,7 @@ def create_table(max_repeats, databasefile="flights.db"):
 
 
 def save_to_db(flight_df, databasefile="flights.db"):
+    """ saving to database """
     # napisz kod zapisania do bazy danych SQLite
     connection = sqlite3.connect(databasefile)
     flight_df.to_sql("airport_atl", connection, if_exists="append", index=False)
@@ -50,6 +53,7 @@ def save_to_db(flight_df, databasefile="flights.db"):
 
 
 def load_flight_data(databasefile="flights.db"):
+    """ loading flight data """
     # napisz kod odczytania danych z bazy danych SQLite
     conn = sqlite3.connect(databasefile)
     flight_df = pd.read_sql_query("SELECT * FROM airport_atl", conn)

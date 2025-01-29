@@ -1,11 +1,14 @@
+""" flight data """
+
 import matplotlib.pyplot as plt
 import requests
-import database
 import pandas as pd
+import database
 
 
 # Funkcja do pozyskania danych z OpenSky Network API
 def fetch_flight_data(databasefile="flights.db"):
+    """ fetch flight data """
     # AREA EXTENT COORDINATE WGS4 (for Atlanta Airport - ATL ± 100 km)
     lon_min, lat_min = -85.4277, 32.6407
     lon_max, lat_max = -83.4277, 34.6407
@@ -21,7 +24,7 @@ def fetch_flight_data(databasefile="flights.db"):
     )
 
     # Fetching data from the API
-    response = requests.get(url_data).json()
+    response = requests.get(url_data, timeout=100).json()
     # print(response)
 
     if 'states' in response and response['states']:
@@ -40,10 +43,9 @@ def fetch_flight_data(databasefile="flights.db"):
 
 # Odczyt danych i wygenerowanie wykresu z danych lotniczych
 def plot_flight_data(databasefile="flights.db", show_plot=True):
+    """ plot flight data """
     # Wczytaj dane lotnicze z bazy danych
     flight_df = database.load_flight_data(databasefile)
-
-    # caly kod tutaj (filtracja, konwersja jednostek, sortowanie i wybieranie jednego, rysowanie wykresu)
 
     # Remove entries with missing values in velocity and geo_altitude
     flight_df = flight_df.dropna(subset=['velocity', 'geo_altitude'])
@@ -55,7 +57,8 @@ def plot_flight_data(databasefile="flights.db", show_plot=True):
     flight_df['geo_altitude_km'] = flight_df['geo_altitude'] / 1000
 
     # Remove duplicate flights, keeping the one with the highest velocity
-    flight_df = flight_df.sort_values(by='velocity_kmh', ascending=False).drop_duplicates(subset='icao24', keep='first')
+    flight_df = (flight_df.sort_values(by='velocity_kmh', ascending=False)
+                 .drop_duplicates(subset='icao24', keep='first'))
 
     plt.figure(figsize=(8, 6))
     plt.scatter(flight_df['velocity_kmh'], flight_df['geo_altitude_km'], alpha=0.6)

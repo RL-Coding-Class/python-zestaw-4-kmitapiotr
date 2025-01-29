@@ -1,44 +1,72 @@
 from functools import singledispatch, singledispatchmethod
 
+
 # Singledispatch: globalna funkcja do logowania zdarzeń
 @singledispatch
 def log_event(event):
     raise NotImplementedError(f"Brak implementacji dla typu: {type(event)}")
 
+
 # Napisz obsluge zdarzen str
+@log_event.register
+def _(event: str):
+    return "str"
+
 
 # Napisz obsluge zdarzen int
+@log_event.register
+def _(event: int):
+    return 1
+
 
 # Napisz obsluge zdarzen typu dict
+@log_event.register
+def _(event: dict):
+    return {"python": "spanish_inquisition"}
 
 
 # Klasa z metodą używającą singledispatchmethod
 class EventHandler:
     def __init__(self):
-        self.event_count = 0 # uwaga: licznik powiekszac o +1 przy kazdej rejestracji
+        self.event_count = 0  # uwaga: licznik powiekszac o +1 przy kazdej rejestracji
 
     @singledispatchmethod
     def handle_event(self, event):
         """Domyślna obsługa zdarzeń"""
         raise NotImplementedError(f"Nieobsługiwany typ zdarzenia: {type(event)}")
 
-
     # Napisz obsluge zdarzen str, pamietaj: self.event_count += 1
+    @handle_event.register
+    def _(self, event: str):
+        self.event_count += 1
+        return "str"
 
     # Napisz obsluge zdarzen int
+    @handle_event.register
+    def _(self, event: int):
+        self.event_count += 1
+        return 1
 
     # Napisz obsluge zdarzen list
+    @handle_event.register
+    def _(self, event: list):
+        self.event_count += 1
+        return []
 
 
 # Klasa pochodna z nowymi rejestracjami typów
 class DerivedHandler(EventHandler):
-
     # Napisz obsluge zdarzen int
+    @EventHandler.handle_event.register
+    def _(self, event: int):
+        self.event_count += 1
+        return 2
 
     # Napisz obsluge zdarzen float
-
-
-
+    @EventHandler.handle_event.register
+    def _(self, event: float):
+        self.event_count += 1
+        return .1
 
 
 # Demonstracja użycia
